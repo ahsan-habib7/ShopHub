@@ -18,7 +18,9 @@ It includes product filtering, category navigation, and a dynamic product displa
 
 ## 📸 Live Demo Link
 
+https://ahsan-habib7.github.io/ShopHub/
 
+---
 
 ## 📂 Project Structure
 
