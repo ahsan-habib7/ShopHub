@@ -25,8 +25,8 @@ It includes product filtering, category navigation, and a dynamic product displa
 ```
 ShopHub/
 │── index.html
-│── style.css
-│── script.js
+│── ShopHub.css
+│── ShopHub.js
 ```
 
 ---
