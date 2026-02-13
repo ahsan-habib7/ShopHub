@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dynamic E-Commerce Store</title>
+        <script src="/_sdk/element_sdk.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="ShopHub.css">
+        <style>@view-transition { navigation: auto; }</style>
+        <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+    </head>
+    <body class="h-full m-0 p-0">
+        <div id="app" class="w-full h-full overflow-auto" style="background: linear-gradient(to bottom, #f8f9ff 0%, #ffffff 100%);"><!-- Glass Header -->
+            <header class="glass-header fixed top-0 left-0 right-0 z-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16 sm:h-20"><!-- Logo -->
+                        <div class="flex items-center space-x-3">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5m0 0a2 2 0 104 0m-4 0h14m0 0a2 2 0 11-4 0" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h1 id="store-name" class="text-xl sm:text-2xl font-bold" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ShopHub</h1>
+                                <p id="tagline" class="text-xs hidden sm:block" style="color: #6b7280;">Your One-Stop Shopping Destination</p>
+                            </div>
+                        </div><!-- Desktop Navigation -->
+                        <nav class="hidden md:flex items-center space-x-8">
+                            <a href="#home" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: #1f2937;">Home</a> 
+                            <a href="#products" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: #1f2937;">Products</a> 
+                            <a href="#offers" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: #1f2937;">Offers</a> 
+                            <a href="#footer" class="text-sm font-medium hover:opacity-70 transition-opacity" style="color: #1f2937;">Contact</a>
+                        </nav><!-- Cart & Mobile Menu -->
+                        <div class="flex items-center space-x-4">
+                            <button id="cart-btn" class="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                                    <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5m0 0a2 2 0 104 0m-4 0h14m0 0a2 2 0 11-4 0" />
+                                </svg>
+                                <span id="cart-count" class="absolute -top-1 -right-1 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background: #ef4444;">0</span> 
+                            </button> 
+                            <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                                    <path d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header><!-- Mobile Menu -->
+            <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 bottom-0 w-64 z-50 shadow-2xl" style="background: white;">
+                <div class="p-6">
+                    <button id="close-menu-btn" class="mb-8 p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                            <path d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <nav class="flex flex-col space-y-4">
+                        <a href="#home" class="text-lg font-medium hover:opacity-70 transition-opacity mobile-menu-link" style="color: #1f2937;">Home</a> 
+                        <a href="#products" class="text-lg font-medium hover:opacity-70 transition-opacity mobile-menu-link" style="color: #1f2937;">Products</a> 
+                        <a href="#offers" class="text-lg font-medium hover:opacity-70 transition-opacity mobile-menu-link" style="color: #1f2937;">Offers</a> 
+                        <a href="#contact" class="text-lg font-medium hover:opacity-70 transition-opacity mobile-menu-link" style="color: #1f2937;">Contact</a>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <main class="pt-16 sm:pt-20">
+                <!-- Hero Section -->
+                <section id="home" class="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4c1d95 100%);">
+                    <div class="absolute inset-0 opacity-15">
+                        <div class="absolute top-0 left-0 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl"></div>
+                        <div class="absolute bottom-0 right-0 w-96 h-96 bg-pink-400 rounded-full filter blur-3xl"></div>
+                    </div>
+                    <div class="max-w-7xl mx-auto relative z-10">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                            <div class="text-left">
+                                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full mb-6 badge-bounce" style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+                                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span> 
+                                    <span class="text-sm font-medium text-white">New arrivals every week</span>
+                                </div>
+                                <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">Premium Quality<br>
+                                    <span 
+                                        style="
+                                            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%); 
+                                            -webkit-background-clip: text; 
+                                            -webkit-text-fill-color: transparent; 
+                                            background-clip: text;">
+                                        Meets Style
+                                    </span>
+                                </h2>
+                                <p class="text-lg text-gray-300 mb-8 max-w-xl leading-relaxed">Experience the perfect blend of quality, design, and affordability. Curated collections for the modern lifestyle.</p>
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <a href="#products" class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105 hover:shadow-2xl" 
+                                        style="
+                                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                            color: white; 
+                                            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);"> 
+                                        <span>Explore Collection</span>
+                                        <svg class="ml-2" width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </a> 
+                                    <a href="#offers" class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold text-lg transition-all hover:scale-105" 
+                                        style="
+                                            background: rgba(255,255,255,0.1); 
+                                            color: white; 
+                                            border: 2px solid rgba(255,255,255,0.2); 
+                                            backdrop-filter: blur(10px);"> 
+                                        <span>Special Offers</span> 
+                                    </a>
+                                </div>
+                                <div class="mt-12 grid grid-cols-3 gap-6">
+                                    <div>
+                                        <div class="text-3xl font-bold text-white mb-1">50K+</div>
+                                        <div class="text-sm text-gray-400">Products Sold</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-3xl font-bold text-white mb-1"> 4.9★ </div>
+                                        <div class="text-sm text-gray-400">Customer Rating</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                                        <div class="text-sm text-gray-400">Support</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden lg:block">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="space-y-4">
+                                        <div class="rounded-2xl p-8 backdrop-filter backdrop-blur-lg badge-bounce" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                                            <div class="text-6xl mb-4">🎧</div>
+                                            <div class="text-white font-semibold mb-2">Electronics</div>
+                                            <div class="text-gray-300 text-sm">Latest tech gadgets</div>
+                                        </div>
+                                        <div class="rounded-2xl p-8 backdrop-filter backdrop-blur-lg" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                                            <div class="text-6xl mb-4">👗</div>
+                                            <div class="text-white font-semibold mb-2">Fashion</div>
+                                            <div class="text-gray-300 text-sm">Trending styles</div>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4 pt-8">
+                                        <div class="rounded-2xl p-8 backdrop-filter backdrop-blur-lg" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                                            <div class="text-6xl mb-4">🏠</div>
+                                            <div class="text-white font-semibold mb-2">Home &amp; Living</div>
+                                            <div class="text-gray-300 text-sm">Comfort essentials</div>
+                                        </div>
+                                        <div class="rounded-2xl p-8 backdrop-filter backdrop-blur-lg badge-bounce" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                                            <div class="text-6xl mb-4">💎</div>
+                                            <div class="text-white font-semibold mb-2">Accessories</div>
+                                            <div class="text-gray-300 text-sm">Perfect finishing</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+       
+                <!-- Trust Stats Section -->
+                <section class="py-12 px-4 sm:px-6 lg:px-8 -mt-16">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="rounded-3xl p-8 sm:p-12" style="background: white; box-shadow: 0 20px 60px rgba(0,0,0,0.08);">
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                                <div class="text-center">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /> <circle cx="9" cy="7" r="4" /> 
+                                            <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-3xl font-bold mb-1" 
+                                        style="
+                                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                            -webkit-background-clip: text; 
+                                            -webkit-text-fill-color: transparent; 
+                                            background-clip: text;">
+                                        10K+
+                                    </div>
+                                    <p class="text-gray-600 font-medium text-sm">Happy Customers</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5m0 0a2 2 0 104 0m-4 0h14m0 0a2 2 0 11-4 0" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-3xl font-bold mb-1" 
+                                        style="
+                                            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                                            -webkit-background-clip: text; 
+                                            -webkit-text-fill-color: transparent; 
+                                            background-clip: text;">
+                                        5,000+
+                                    </div>
+                                    <p class="text-gray-600 font-medium text-sm">Products Available</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-3xl font-bold mb-1" 
+                                        style="
+                                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+                                            -webkit-background-clip: text; 
+                                            -webkit-text-fill-color: transparent; 
+                                            background-clip: text;">
+                                        99.9%
+                                    </div>
+                                    <p class="text-gray-600 font-medium text-sm">Satisfaction Rate</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                        <svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" /> <path d="M12 6v6l4 2" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-3xl font-bold mb-1" 
+                                        style="
+                                            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+                                            -webkit-background-clip: text; 
+                                            -webkit-text-fill-color: transparent; 
+                                            background-clip: text;">
+                                        24/7
+                                    </div>
+                                    <p class="text-gray-600 font-medium text-sm">Customer Support</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Special Offer Banner -->
+                <section id="offers" class="py-8 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="rounded-3xl overflow-hidden relative" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 20px 60px rgba(239, 68, 68, 0.3);">
+                            <div class="absolute inset-0 opacity-20">
+                                <div class="absolute -top-12 -right-12 w-64 h-64 bg-white rounded-full"></div>
+                                <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-white rounded-full"></div>
+                            </div>
+                            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 sm:p-12 items-center">
+                                <div>
+                                    <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-bold mb-4" style="background: rgba(255,255,255,0.2);">
+                                        <svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                                            <circle cx="12" cy="12" r="10" /> 
+                                            <path d="M12 6v6l4 2" />
+                                        </svg>
+                                        <span class="text-white">LIMITED TIME OFFER</span>
+                                    </div>
+                                    <h3 id="offer-title" class="text-3xl sm:text-4xl font-bold text-white mb-4">Up to 50% Off Today!</h3>
+                                    <p id="offer-description" class="text-lg text-white text-opacity-90 mb-6">Don't miss our biggest sale of the season. Free shipping on orders over $50.</p>
+                                    <a href="#products" class="inline-flex items-center space-x-2 px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105" style="background: white; color: #ef4444; box-shadow: 0 4px 16px rgba(0,0,0,0.2);"> 
+                                        <span>Shop Now</span>
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                            <path d="M5 12h14M12 5l7 7-7 7" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <div class="hidden lg:grid grid-cols-2 gap-4">
+                                    <div class="rounded-2xl p-6 backdrop-filter backdrop-blur-lg" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                                        <div class="text-5xl mb-3">🎁</div>
+                                        <div class="text-white font-bold mb-1">Free Gift</div>
+                                        <div class="text-white text-opacity-80 text-sm">With every purchase</div>
+                                    </div>
+                                    <div class="rounded-2xl p-6 backdrop-filter backdrop-blur-lg" style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                                        <div class="text-5xl mb-3">🚚</div>
+                                        <div class="text-white font-bold mb-1">Fast Delivery</div>
+                                        <div class="text-white text-opacity-80 text-sm">2-3 business days</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Products Section -->
+                <section id="products" class="py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="text-2xl sm:text-3xl font-bold mb-8 text-center" style="color: #1f2937;">Featured Products by Category</h3>
+                        <!-- Featured Products Preview with Carousel -->
+                        <div id="featured-products-grid" class="space-y-12"><!-- Featured product carousels will be dynamically inserted here --></div>
+                        
+                        <!-- View All Products Button -->
+                        <div class="text-center mt-12">
+                            <button id="view-all-products-btn" class="px-12 py-5 rounded-2xl font-bold text-xl transition-all hover:scale-105" 
+                                style="
+                                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                    color: white; 
+                                    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);"> 
+                                View All Products → 
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Features Section -->
+                <section class="py-20 px-4 sm:px-6 lg:px-8" style="background: white;">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="text-center mb-16">
+                            <h3 class="text-3xl sm:text-4xl font-bold mb-4" style="color: #1f2937;">Why Choose Us</h3>
+                            <p class="text-lg text-gray-600 max-w-2xl mx-auto">Experience shopping made simple with our commitment to quality, security, and customer satisfaction</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="text-center p-8 rounded-2xl transition-all hover:shadow-xl" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);">
+                                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" /> 
+                                        <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold mb-3" style="color: #1f2937;">Free Shipping</h4>
+                                <p class="text-gray-600">Free delivery on all orders over $50. No hidden charges, ever.</p>
+                            </div>
+                            <div class="text-center p-8 rounded-2xl transition-all hover:shadow-xl" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);">
+                                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                                    <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /> 
+                                        <path d="M7 11V7a5 5 0 0110 0v4" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold mb-3" style="color: #1f2937;">Secure Checkout</h4>
+                                <p class="text-gray-600">Your payment information is protected with industry-standard encryption.</p>
+                            </div>
+                            <div class="text-center p-8 rounded-2xl transition-all hover:shadow-xl" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);">
+                                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+                                    <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /> 
+                                        <path d="M9 22V12h6v10" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold mb-3" style="color: #1f2937;">Easy Returns</h4>
+                                <p class="text-gray-600">30-day hassle-free returns. Not satisfied? Get your money back.</p>
+                            </div>
+                            <div class="text-center p-8 rounded-2xl transition-all hover:shadow-xl" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);">
+                                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-6" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+                                    <svg width="40" height="40" viewbox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold mb-3" style="color: #1f2937;">24/7 Support</h4>
+                                <p class="text-gray-600">Our dedicated team is always here to help you with any questions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Testimonials Section -->
+                <section class="py-16 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto">
+                        <h3 class="text-3xl sm:text-4xl font-bold mb-12 text-center" style="color: #1f2937;">What Our Customers Say</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="rounded-3xl p-8" style="background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="flex items-center mb-4">
+                                    <div class="text-4xl mr-3">👤</div>
+                                    <div>
+                                        <h4 class="font-bold" style="color: #1f2937;">Sarah Johnson</h4>
+                                        <div class="text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">"Amazing quality products! Fast shipping and excellent customer service. Highly recommend!"</p>
+                            </div>
+                            <div class="rounded-3xl p-8" style="background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="flex items-center mb-4">
+                                    <div class="text-4xl mr-3">👨</div>
+                                    <div>
+                                        <h4 class="font-bold" style="color: #1f2937;">Michael Chen</h4>
+                                        <div class="text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">"Best online shopping experience I've had. Great prices and the products exceeded my expectations."</p>
+                            </div>
+                            <div class="rounded-3xl p-8" style="background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="flex items-center mb-4">
+                                    <div class="text-4xl mr-3">👩</div>
+                                    <div>
+                                        <h4 class="font-bold" style="color: #1f2937;">Emma Davis</h4>
+                                        <div class="text-yellow-400 text-sm">⭐⭐⭐⭐⭐</div>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600">"I love shopping here! The variety is incredible and everything arrives in perfect condition."</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Newsletter Section -->
+                <section class="py-16 px-4 sm:px-6 lg:px-8" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);">
+                    <div class="max-w-4xl mx-auto text-center">
+                        <h3 class="text-3xl sm:text-4xl font-bold text-white mb-4">Join Our Newsletter</h3>
+                        <p class="text-white text-opacity-90 text-lg mb-8">Subscribe to get special offers, free giveaways, and exclusive deals!</p>
+                        <form id="newsletter-form" class="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
+                            <label for="newsletter-email" class="sr-only">Email address</label> 
+                            <input type="email" id="newsletter-email" placeholder="Enter your email" required class="flex-1 px-6 py-4 rounded-2xl text-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50" style="color: #1f2937;"> 
+                            <button type="submit" class="px-8 py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105" style="background: white; color: #667eea;"> Subscribe </button>
+                        </form>
+                    </div>
+                </section>
+                
+                <!-- All Products Page (Hidden by default) -->
+                <section id="all-products-page" class="hidden min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto">
+                        <div class="flex items-center justify-between mb-8">
+                            <button id="back-to-home-btn" class="flex items-center space-x-2 px-6 py-3 rounded-2xl font-semibold transition-all hover:scale-105" style="background: white; color: #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                <span>← Back to Home</span> 
+                            </button>
+                            <h3 class="text-2xl sm:text-3xl font-bold" style="color: #1f2937;">All Products</h3>
+                            <div class="w-32"></div><!-- Spacer for centering -->
+                        </div><!-- Filter Section -->
+                        <div class="mb-8">
+                            <h4 class="text-xl font-bold mb-4" style="color: #1f2937;">Filter by Category</h4>
+                            <div class="flex flex-wrap gap-3">
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="all" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7" /> 
+                                            <rect x="14" y="3" width="7" height="7" /> 
+                                            <rect x="14" y="14" width="7" height="7" /> 
+                                            <rect x="3" y="14" width="7" height="7" />
+                                        </svg>
+                                        <span>All Products</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="electronics" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="2" y="7" width="20" height="14" rx="2" /> 
+                                            <path d="M16 3v4M8 3v4" />
+                                        </svg>
+                                        <span>Electronics</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="fashion" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z" /> 
+                                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+                                        </svg>
+                                        <span>Fashion</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="home" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /> 
+                                            <path d="M9 22V12h6v10" />
+                                        </svg>
+                                        <span>Home &amp; Living</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="accessories" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="3" /> 
+                                            <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3" />
+                                        </svg>
+                                        <span>Accessories</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="sports" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" /> 
+                                            <path d="M12 2a14.5 14.5 0 000 20 14.5 14.5 0 000-20" />
+                                        </svg>
+                                        <span>Sports &amp; Fitness</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="beauty" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+                                        </svg>
+                                        <span>Beauty &amp; Care</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="books" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" /> 
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+                                        </svg>
+                                        <span>Books &amp; Media</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="toys" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="5" r="3" /> 
+                                            <path d="M12 8v5l3 3" />
+                                        </svg>
+                                        <span>Toys &amp; Games</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="food" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 8h1a4 4 0 010 8h-1" /> 
+                                            <path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z" /> 
+                                            <line x1="6" y1="1" x2="6" y2="4" /> 
+                                            <line x1="10" y1="1" x2="10" y2="4" /> 
+                                            <line x1="14" y1="1" x2="14" y2="4" />
+                                        </svg>
+                                        <span>Food &amp; Grocery</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="automotive" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="7" cy="17" r="2" /> 
+                                            <circle cx="17" cy="17" r="2" /> 
+                                            <path d="M5 17H3v-5l2-4h8l4 4h2a2 2 0 012 2v3h-2" />
+                                        </svg>
+                                        <span>Automotive</span> 
+                                    </span> 
+                                </button> 
+                                <button class="catalog-filter-btn px-6 py-3 rounded-2xl font-semibold text-sm transition-all" data-category="pets" style="background: white; color: #1f2937; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> 
+                                    <span class="flex items-center space-x-2">
+                                        <svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="10" r="3" /> 
+                                            <circle cx="6" cy="7" r="2" /> 
+                                            <circle cx="18" cy="7" r="2" /> 
+                                            <circle cx="6" cy="15" r="2" /> 
+                                            <circle cx="18" cy="15" r="2" />
+                                        </svg>
+                                        <span>Pet Supplies</span> 
+                                    </span> 
+                                </button>
+                            </div>
+                        </div>
+                            
+                        <!-- Sub-Filter Section (Hidden by default) -->
+                        <div id="subfilter-section" class="mb-12 hidden">
+                            <div class="rounded-2xl p-6" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%); border: 2px solid rgba(102, 126, 234, 0.2);">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h4 class="text-lg font-bold" style="color: #1f2937;"><span id="subfilter-title">Filter by Type</span></h4><button id="clear-subfilter-btn" class="text-sm font-semibold hover:opacity-70 transition-opacity" style="color: #667eea;"> Clear Filter </button>
+                                </div>
+                                <div id="subfilter-buttons" class="flex flex-wrap gap-2"><!-- Subcategory buttons will be inserted here --></div>
+                            </div>
+                        </div><!-- All Products Grid -->
+                        <div id="all-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"><!-- Products will be dynamically inserted here --></div>
+                    </div>
+                </section>
+            </main>
+            
+            <!-- Footer -->
+            <footer id="footer" class="py-12 px-4 sm:px-6 lg:px-8 mt-20" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4">About Us</h4>
+                            <p class="text-gray-400 text-sm">Your trusted online shopping destination for quality products at great prices.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4">Quick Links</h4>
+                            <ul class="space-y-2">
+                                <li><a href="#home" class="text-gray-400 text-sm hover:text-white transition-colors">Home</a></li>
+                                <li><a href="#products" class="text-gray-400 text-sm hover:text-white transition-colors">Products</a></li>
+                                <li><a href="#offers" class="text-gray-400 text-sm hover:text-white transition-colors">Offers</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4">Customer Service</h4>
+                            <ul class="space-y-2">
+                                <li><a href="#contact" class="text-gray-400 text-sm hover:text-white transition-colors">Contact Us</a></li>
+                                <li><a href="#" class="text-gray-400 text-sm hover:text-white transition-colors">Shipping Info</a></li>
+                                <li><a href="#" class="text-gray-400 text-sm hover:text-white transition-colors">Returns</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4">Connect</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity" style="background: rgba(255,255,255,0.1);"> 
+                                    <span class="text-white">📘</span> 
+                                </a> 
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity" style="background: rgba(255,255,255,0.1);"> 
+                                    <span class="text-white">📷</span> 
+                                </a> 
+                                <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity" style="background: rgba(255,255,255,0.1);"> 
+                                    <span class="text-white">🐦</span> 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 pt-8 text-center">
+                        <p id="footer-text" class="text-gray-400 text-sm">© 2024 ShopHub. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+            
+            <!-- Product Detail Modal -->
+            <div id="product-modal" class="fixed inset-0 z-50 hidden" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+                <div class="h-full overflow-y-auto py-8 px-4">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="rounded-3xl p-8 relative" style="background: white; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                            <button id="close-modal-btn" class="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                                    <path d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8"><!-- Image Gallery -->
+                                <div>
+                                    <div id="modal-main-image" class="text-9xl text-center mb-4 p-8 rounded-2xl" style="background: linear-gradient(135deg, #f8f9ff 0%, #e8eaff 100%);">🎧</div>
+                                    <div id="modal-thumbnail-container" class="flex justify-center space-x-3"><!-- Thumbnails will be inserted here --></div>
+                                </div><!-- Product Details -->
+                                <div>
+                                    <div class="mb-3">
+                                        <span id="modal-brand" class="text-sm font-semibold px-3 py-1 rounded-full" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Brand</span>
+                                    </div>
+                                    <h2 id="modal-title" class="text-3xl font-bold mb-3" style="color: #1f2937;">Product Name</h2>
+                                    <div class="flex items-center mb-4">
+                                        <span id="modal-rating" class="text-yellow-400 text-lg mr-2">⭐⭐⭐⭐⭐</span> 
+                                        <span id="modal-rating-num" class="text-gray-600">4.5</span> 
+                                        <span id="modal-stock" class="ml-auto text-green-600 font-semibold">In Stock</span>
+                                    </div>
+                                    <p id="modal-description" class="text-gray-600 mb-6 leading-relaxed">Product description goes here</p>
+                                    <div class="mb-6">
+                                        <span id="modal-price" class="text-4xl font-bold" style="color: #667eea;">$79.99</span>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <button id="modal-add-to-cart" class="w-full py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);"> Add to Cart </button> 
+                                        <button id="modal-buy-now" class="w-full py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105" style="background: white; color: #667eea; border: 2px solid #667eea;"> Buy Now </button>
+                                    </div>
+                                    <div class="mt-6 pt-6 border-t border-gray-200">
+                                        <h3 class="font-bold mb-3" style="color: #1f2937;">Product Details</h3>
+                                        <ul id="modal-details" class="space-y-2 text-sm text-gray-600">
+                                            <li class="flex items-start">
+                                                <span class="mr-2">✓</span> 
+                                                <span>Free shipping on orders over $50</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="mr-2">✓</span> 
+                                                <span>30-day return policy</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <span class="mr-2">✓</span> 
+                                                <span>1-year warranty included</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Shopping Cart Sidebar -->
+            <div id="cart-sidebar" class="fixed top-0 right-0 bottom-0 w-full sm:w-96 z-50 shadow-2xl transform translate-x-full transition-transform duration-300" style="background: white;">
+                <div class="h-full flex flex-col">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-2xl font-bold" style="color: #1f2937;">Shopping Cart</h2>
+                            <button id="close-cart-btn" class="p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                                    <path d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="cart-items-container" class="flex-1 overflow-y-auto p-6"><!-- Cart items will be inserted here --></div>
+                    <div class="p-6 border-t border-gray-200">
+                        <div class="mb-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Subtotal:</span> 
+                                <span id="cart-subtotal" class="font-bold text-lg" style="color: #1f2937;">$0.00</span>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-600">Shipping:</span> 
+                                <span class="text-green-600 font-semibold">Free</span>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 border-t border-gray-200">
+                                <span class="text-xl font-bold" style="color: #1f2937;">Total:</span> 
+                                <span id="cart-total" class="text-2xl font-bold" style="color: #667eea;">$0.00</span>
+                            </div>
+                        </div>
+                        <button id="checkout-btn" class="w-full py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105" 
+                            style="
+                                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                                color: white; 
+                                box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);"> 
+                            Proceed to Checkout 
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Checkout Modal -->
+            <div id="checkout-modal" class="fixed inset-0 z-50 hidden" style="background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);">
+                <div class="h-full overflow-y-auto py-8 px-4">
+                    <div class="max-w-3xl mx-auto">
+                        <div class="rounded-3xl p-8 relative" style="background: white; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+                            <button id="close-checkout-btn" class="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center hover:bg-gray-100 transition-colors">
+                                <svg width="24" height="24" viewbox="0 0 24 24" fill="none" stroke="#1f2937" stroke-width="2">
+                                    <path d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                            <h2 class="text-3xl font-bold mb-8" style="color: #1f2937;">Complete Your Order</h2>
+                            <form id="checkout-form"><!-- Shipping Information -->
+                                <div class="checkout-step">
+                                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: #1f2937;">
+                                        <span class="w-8 h-8 rounded-full flex items-center justify-center mr-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">1</span> Shipping Information
+                                    </h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="checkout-name" class="block text-sm font-semibold mb-2" style="color: #1f2937;">Full Name</label> 
+                                            <input type="text" id="checkout-name" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none">
+                                        </div>
+                                        <div>
+                                            <label for="checkout-phone" class="block text-sm font-semibold mb-2" style="color: #1f2937;">Phone Number</label> 
+                                            <input type="tel" id="checkout-phone" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none">
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label for="checkout-address" class="block text-sm font-semibold mb-2" style="color: #1f2937;">Delivery Address</label> 
+                                            <textarea id="checkout-address" required rows="3" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none"></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="checkout-city" class="block text-sm font-semibold mb-2" style="color: #1f2937;">City</label> 
+                                            <input type="text" id="checkout-city" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none">
+                                        </div>
+                                        <div>
+                                            <label for="checkout-postal" class="block text-sm font-semibold mb-2" style="color: #1f2937;">Postal Code</label> 
+                                            <input type="text" id="checkout-postal" required class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:outline-none">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Payment Method -->
+                                <div class="checkout-step">
+                                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: #1f2937;">
+                                        <span class="w-8 h-8 rounded-full flex items-center justify-center mr-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">2</span> Payment Method
+                                    </h3>
+                                    <div class="space-y-3">
+                                        <div class="payment-option" data-payment="bkash">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-bkash" name="payment" value="bkash" class="w-5 h-5 mr-3"> 
+                                                <label for="payment-bkash" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">📱</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">bKash</div>
+                                                            <div class="text-sm text-gray-600">Mobile payment</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-payment="nagad">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-nagad" name="payment" value="nagad" class="w-5 h-5 mr-3"> 
+                                                <label for="payment-nagad" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">💳</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">Nagad</div>
+                                                            <div class="text-sm text-gray-600">Mobile payment</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-payment="rocket">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-rocket" name="payment" value="rocket" class="w-5 h-5 mr-3"> 
+                                                <label for="payment-rocket" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">🚀</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">Rocket</div>
+                                                            <div class="text-sm text-gray-600">Mobile payment</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-payment="bank">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-bank" name="payment" value="bank" class="w-5 h-5 mr-3"> 
+                                                <label for="payment-bank" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">🏦</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">Bank Transfer</div>
+                                                            <div class="text-sm text-gray-600">Direct bank payment</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-payment="card">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-card" name="payment" value="card" class="w-5 h-5 mr-3"> 
+                                                <label for="payment-card" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">💎</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">Credit/Debit Card</div>
+                                                            <div class="text-sm text-gray-600">Visa, Mastercard, Amex</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-option" data-payment="cod">
+                                            <div class="flex items-center">
+                                                <input type="radio" id="payment-cod" name="payment" value="cod" class="w-5 h-5 mr-3" checked> 
+                                                <label for="payment-cod" class="flex-1 flex items-center justify-between cursor-pointer">
+                                                    <div class="flex items-center">
+                                                        <div class="text-2xl mr-3">💵</div>
+                                                        <div>
+                                                            <div class="font-bold" style="color: #1f2937;">Cash on Delivery</div>
+                                                            <div class="text-sm text-gray-600">Pay when you receive</div>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Order Summary -->
+                                <div class="checkout-step">
+                                    <h3 class="text-xl font-bold mb-4 flex items-center" style="color: #1f2937;">
+                                        <span class="w-8 h-8 rounded-full flex items-center justify-center mr-3" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">3</span> Order Summary
+                                    </h3>
+                                    <div id="checkout-items" class="space-y-3 mb-4"><!-- Order items will be inserted here --></div>
+                                    <div class="pt-4 border-t border-gray-200">
+                                        <div class="flex justify-between mb-2">
+                                            <span class="text-gray-600">Subtotal:</span> 
+                                            <span id="checkout-subtotal" class="font-bold">$0.00</span>
+                                        </div>
+                                        <div class="flex justify-between mb-2">
+                                            <span class="text-gray-600">Delivery Charge:</span> 
+                                            <span class="text-green-600 font-semibold">Free</span>
+                                        </div>
+                                        <div class="flex justify-between pt-2 border-t border-gray-200">
+                                            <span class="text-xl font-bold" style="color: #1f2937;">Total:</span> 
+                                            <span id="checkout-total" class="text-2xl font-bold" style="color: #667eea;">$0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105" 
+                                    style="
+                                        background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+                                        color: white; 
+                                        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);"> 
+                                    Place Order 
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="ShopHub.js"></script>
+        <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c7a0282b773ba55',t:'MTc3MDAzODY3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    </body>
+</html>
